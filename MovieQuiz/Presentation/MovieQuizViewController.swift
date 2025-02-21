@@ -1,9 +1,13 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    @IBOutlet weak var testButton: UIButton!
+    @IBOutlet weak var testLabel: UILabel!
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        testLabel.font = UIFont(name: "YSDisplay-Medium", size: 23)
+        testButton.layer.cornerRadius = 15
     }
 }
 

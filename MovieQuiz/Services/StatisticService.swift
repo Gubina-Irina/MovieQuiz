@@ -34,13 +34,13 @@ final class StatisticServiceImplementation: StatisticServiceProtocol {
         get {
             let correct = storage.integer(forKey: Keys.correct.rawValue)
             let total = storage.integer(forKey: Keys.total.rawValue)
-            let date = storage.object(forKey: Keys.date.rawValue) as? Date ?? Date()// Добавьте чтение значений полей GameResult(correct, total и date) из UserDefaults,
-            return GameResult(correct: correct, total: total, date: date)// затем создайте GameResult от полученных значений
+            let date = storage.object(forKey: Keys.date.rawValue) as? Date ?? Date()
+            return GameResult(correct: correct, total: total, date: date)
         }
         set {
             storage.set(newValue.correct, forKey: Keys.correct.rawValue)
             storage.set(newValue.total, forKey: Keys.total.rawValue)
-            storage.set(newValue.date, forKey: Keys.date.rawValue)// Добавьте запись значений каждого поля из newValue в UserDefaults
+            storage.set(newValue.date, forKey: Keys.date.rawValue)
         }
     }
     

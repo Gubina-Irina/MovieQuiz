@@ -6,8 +6,8 @@
 //
 
 import Foundation
-//В ней будет храниться массив с вопросами и один метод, который вернёт случайно выбранный вопрос.
-class QuestionFactory: QuestionFactoryProtocol {
+
+final class QuestionFactory: QuestionFactoryProtocol {
     weak var delegate: QuestionFactoryDelegate?
     
     func setup(delegate: QuestionFactoryDelegate) {

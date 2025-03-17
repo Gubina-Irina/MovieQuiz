@@ -5,15 +5,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - IB Outlets
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
-    
     @IBOutlet private weak var imageView: UIImageView!
-    
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
-    
-    
-    
-    
     
     // MARK: - Private Properties
     
@@ -32,16 +26,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+        counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
         
         let questionFactory = QuestionFactory()
         questionFactory.setup(delegate: self)
         self.questionFactory = questionFactory
         questionFactory.requestNextQuestion()
+        
         alertPresenter = AlertPresenter(viewController: self)
         statisticService = StatisticServiceImplementation()
     }
     
-    // MARK: - QuestionFactoryDelegate
+    // MARK: - Properties
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
@@ -65,12 +62,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - Private Methods
+    private func setAnswerButtonsState(isEnabled: Bool) {
+        yesButton.isEnabled = isEnabled
+        noButton.isEnabled = isEnabled
+    }
     
     private func checkAnswer(givenAnswer: Bool) {
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
+        setAnswerButtonsState(isEnabled: false)
         guard let currentQuestion = currentQuestion else { return }
-        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
@@ -78,23 +77,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if isCorrect {
             correctAnswers += 1
         }
-        
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
-            self.imageView.layer.borderWidth = 0 // Убираем рамку
-            self.yesButton.isEnabled = true  // Включаем кнопки обратно
-            self.noButton.isEnabled = true   // Включаем кнопки обратно
+            self.imageView.layer.borderWidth = 0
+            setAnswerButtonsState(isEnabled: true)
             self.showNextQuestionOrResults()
         }
     }
     
     private func showNextQuestionOrResults() {
         guard let statisticService = statisticService else { return }
-        
         if currentQuestionIndex == questionsAmount - 1 {
             statisticService.store(correct: correctAnswers, total: questionsAmount)
             let bestGame = statisticService.bestGame
@@ -106,7 +102,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))
         Средняя точность: \(accuracy)%
         """
-            
             let result = AlertModel(
                 title: "Этот раунд окончен!",
                 message: text,

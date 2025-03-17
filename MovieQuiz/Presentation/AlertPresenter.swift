@@ -26,8 +26,6 @@ final class AlertPresenter {
         }
         
         alert.addAction(action)
-        DispatchQueue.main.async {
-            self.viewController?.present(alert, animated: true)
-        }
+        viewController?.present(alert, animated: true)
     }
 }

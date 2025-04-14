@@ -8,15 +8,20 @@
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
+    
+    // MARK: - Private Properties
+    private var currentQuestionIndex: Int = 0
+    
+    // MARK: - Public Properties
     var statisticService: StatisticServiceProtocol
     var questionFactory: QuestionFactoryProtocol?
     weak var viewController: MovieQuizViewControllerProtocol?
-    
+
     var currentQuestion: QuizQuestion?
     let questionsAmount: Int = 10
-    private var currentQuestionIndex: Int = 0
     var correctAnswers: Int = 0
     
+    // MARK: - Initializers
     init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         
@@ -28,7 +33,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     // MARK: - QuestionFactoryDelegate
-    
     func didLoadDataFromServer() {
         viewController?.hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
@@ -50,6 +54,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
+    // MARK: - Public Methods
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
     }
@@ -103,6 +108,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         return resultMessage
     }
     
+    // MARK: - Private Methods
     private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {return}
         

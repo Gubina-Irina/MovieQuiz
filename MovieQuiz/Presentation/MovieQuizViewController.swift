@@ -10,13 +10,13 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var counterLabel: UILabel!
     
-    // MARK: - Private Properties
-    
-    private var presenter: MovieQuizPresenter!
-    
+    // MARK: - Public Properties
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
+    
+    // MARK: - Private Properties
+    private var presenter: MovieQuizPresenter!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -38,7 +38,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         presenter.noButtonClicked()
     }
     
-    // MARK: - Private Methods
+    // MARK: - Public Methods
     func showLoadingIndicator() {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()

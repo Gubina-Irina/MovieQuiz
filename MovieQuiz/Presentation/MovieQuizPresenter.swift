@@ -13,13 +13,13 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var currentQuestionIndex: Int = 0
     
     // MARK: - Public Properties
-    var statisticService: StatisticServiceProtocol
-    var questionFactory: QuestionFactoryProtocol?
-    weak var viewController: MovieQuizViewControllerProtocol?
-
-    var currentQuestion: QuizQuestion?
-    let questionsAmount: Int = 10
-    var correctAnswers: Int = 0
+    private let statisticService: StatisticServiceProtocol
+    private var questionFactory: QuestionFactoryProtocol?
+    private weak var viewController: MovieQuizViewControllerProtocol?
+    
+    private var currentQuestion: QuizQuestion?
+    private let questionsAmount: Int = 10
+    private var correctAnswers: Int = 0
     
     // MARK: - Initializers
     init(viewController: MovieQuizViewControllerProtocol) {
@@ -90,7 +90,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         didAnswer(isYes: false)
     }
     
-    func makeResultsMessage() -> String {
+    private func makeResultsMessage() -> String {
         statisticService.store(correct: correctAnswers, total: questionsAmount)
         
         let bestGame = statisticService.bestGame
